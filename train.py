@@ -13,7 +13,6 @@ import random
 
 from dataset import Data_Loader
 from utils.monitor import *
-# from model.cycle_gan import Registration_VGG
 
 def train(net, device, data_path, epochs=40, batch_size=1, lr=0.00001, resize=160):
     # Monitor
@@ -24,6 +23,7 @@ def train(net, device, data_path, epochs=40, batch_size=1, lr=0.00001, resize=16
                                     transforms.ToTensor(),
                                     transforms.Normalize(0, 1)
                                     ])
+
     train_dataset = Data_Loader(data_path, transform)
     valid_dataset = Data_Loader(data_path, transform)
 
@@ -65,7 +65,7 @@ def train(net, device, data_path, epochs=40, batch_size=1, lr=0.00001, resize=16
 if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     net = None
-    net.to(device=device)
+    # net.to(device=device)
     data_path = "Data/joint_dataset"
     train(net, device, data_path, epochs=10, batch_size=50, lr=0.01, resize=224)
 
