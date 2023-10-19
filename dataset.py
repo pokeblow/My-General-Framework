@@ -11,35 +11,29 @@ import matplotlib.pyplot as plt
 class Data_Loader(Dataset):
     def __init__(self, data_path, transform=None):
         self.data_path = data_path
-        self.img_path = glob.glob(os.path.join(data_path, 'moving/*.bmp'))
+        self.image_path_list = glob.glob(os.path.join(data_path, 'image/*.bmp'))
         self.transform = transform
 
     def __getitem__(self, index):
         # Data path
-        moving_path = self.img_path[index]
-        fixed_path = moving_path.replace('moving', 'fixed')
-        label = self.ground_truth[index]
+        image_path = self.image_path_list[index]
         # Image input
-        moving = np.array(Image.open(moving_path))
-        fixed = np.array(Image.open(fixed_path))
+        image = np.array(Image.open(image_path))
         # Normalization to 0-1
         def normalization(data):
             range = np.max(data) - np.min(data)
             return (data - np.min(data)) / range
-        moving = normalization(moving)
-        fixed = normalization(fixed)
+        image = normalization(image)
         # Transform
-        moving = self.transform(Image.fromarray(moving))
-        fixed = self.transform(Image.fromarray(fixed))
-        # label = torch.tensor(label)
+        image = self.transform(Image.fromarray(image))
 
-        return moving, fixed
+        return image
 
     def __len__(self):
-        return len(self.img_path)
+        return len(self.image_path_list)
 
 if __name__ == "__main__":
-    data_path = 'Data/test_dataset'
+    data_path = 'Data/test_dataset_unsupervised'
     transform = transforms.Compose([transforms.Resize((224, 224)),
                                     transforms.ToTensor
                                     ])
